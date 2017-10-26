@@ -1,0 +1,178 @@
+Created by: Mitchell Myjak
+Date created: 10/25/17
+Date last edited: 10/25/17
+
+Welcome welcome welcome! to the keras install manual!
+Follow this guide to successfully download keras and tensorflow
+to your server account. By doing this, you will be able to 
+use import Keras and tensorflow into a python program
+This needs to be done on the school's server so you 
+have acccess to a GPU which has enough computing power to
+run the deep neural net
+
+Please note:
+When I say "run: <command>" that means just type the command
+into the terminal and enter. I will explain what you are running in
+the sentence before.
+If the instruction has been explained before, I won't explain how
+to run the command. I.e. I will only tell you how to change directories once
+To paste in linux terminal and vim, use ctrl + shift + v
+Lastly, this is a somewhat time consuming process, be patient
+and you will be rewarded
+
+download python from source
+----------------------------
+go to python.org
+scroll down to downloads
+click on Python 2.7.14
+select gzipped source tarball
+go to downloads directory
+run:
+cd Downloads
+unzip the file
+run:
+tar -xvzf Python-2.7.14.tgz
+sftp into room 127
+run:
+sftp mmyjak@127x02.csc.calpoly.edu
+where mmyjak is replaced with your username and x02 can be any value 01 to 20
+put the Python directory and its contents from your local machine to server
+run:
+put Python-2.7.14
+or whatever python version you downloaded
+exit sftp
+run:
+exit
+ssh into room 127
+run:
+ssh mmyjak@127x02.csc.calpoly.edu
+make a directory 'my_python'
+run:
+mkdir my_python
+go to Python-2.7.14 directory
+configure python
+run:
+./configure --prefix=/home/mmyjak/my_python --with-ensurepip=install
+where mmyjak is replaced by your username
+run:
+make
+run:
+make install
+
+update .bashrc
+----------------
+access your rc
+run:
+vim .bashrc
+add the following to the bottom of your rc with the following two exceptions:
+change all instances of jseng to your username
+change all instances of python_install to my_python
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64/:/home/jseng/pytho
+n_install/lib64
+export CPATH=$CPATH:$HOME/python_install/include
+export CUDNN_INCLUDE=/home/jseng/python_install/include
+export CUDNN_LIBRARY=/home/jseng/python_install/lib64
+export PYTHONPATH="${PYTHONPATH}:/home/jseng/python_install/lib/python2.7/site-p
+ackages/"
+export PATH=~/my_python/bin:$PATH
+
+ensure that the python version ran is updated
+-----------------------------------------
+run python
+run:
+python
+it should show version 2.7.14
+if it shows 2.7.5, then you did not update the path correctly
+exit python using ctrl + d
+
+install bazel
+-----------------
+make a directory called 'bazel' and change to that directory
+go to https://github.com/bazelbuild/bazel/releases
+right click on bazel.dist.zip 
+select copy link address
+MAKE SURE YOU ARE IN /bazel NOT IN TOP LEVEL DIRECTORY
+download the file
+run:
+wget <link address>
+where <link address> is the link address you copied in the step before
+run:
+./compile.sh
+to compile bazel
+
+install cuDNN
+--------------
+make an account on nvidia
+go to https://developer.nvidia.com/rdp/cudnn-download
+click Download cuDNN v7.0.3 (Sept 28, 2017), for CUDA 9.0
+select cuDNN v7.0 Library for Linux
+make a directory called cuDNN
+move the cudnn-9.0-linux-x64-v7.tgz to cuDNN
+go to cuDNN directory
+unzip the tar file
+run the following commands to move files around:
+cd cuda
+cd include/
+mv cudnn.h ~/my_python/include/
+cd ..
+cd lib64/
+cd ..
+mv lib64/ ~/my_python/
+
+configure tensorflow
+---------------------
+pull tensorflow into home directory using git
+git clone https://github.com/tensorflow/tensorflow.git
+go to tensorflow directory
+configure tensorflow
+run:
+./configure
+run with these settings. default means press enter
+change mmyjak to your username when specifying the location of cuDNN
+
+default
+default
+yes for jemalloc
+no up until CUDA support
+yes for cuda support
+9.0
+default
+7.0.3
+Please specify the location where cuDNN 7.0.3...: /home/mmyjak/my_python
+default
+no for clang
+Please specify which gcc...: /usr/bin/gcc
+no for mpi support
+default
+
+finish the build
+-------------------
+go to tensorflow directory
+build tensorflow
+run:
+bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package
+run:
+bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+go to /tmp directory
+go to tensorflow_pkg directory
+copy the .whl file, it should look something like:
+tensorflow-1.4.0rc0-cp27-cp27m-linux_x86_64.whl
+run:
+pip install /tmp/tensorflow_pkg/<pasted whl file>
+where <pasted whl file> is the .whl file you copied from the previous step
+
+validate your installation
+--------------------
+run python
+Enter the following short program inside the python interactive shell:
+import tensorflow as tf
+hello = tf.constant('Hello, TensorFlow!')
+sess = tf.Session()
+print(sess.run(hello))
+If the system outputs the following, then you are ready to begin writing TensorFlow programs:
+Hello, TensorFlow!
+
+Congrats, you have successfully installed tensorflow!!!!
+That was fun right?! Dr. Seng and I had a blast!
+Now get coding!!
