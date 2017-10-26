@@ -46,6 +46,7 @@ exit
 ssh into room 127
 run:
 ssh mmyjak@127x02.csc.calpoly.edu
+where mmyjak is replaced with your username and x02 can be any value 01 to 20
 make a directory 'my_python'
 run:
 mkdir my_python
@@ -88,7 +89,8 @@ exit python using ctrl + d
 
 install bazel
 -----------------
-make a directory called 'bazel' and change to that directory
+make a directory called 'bazel'
+go to that directory
 go to https://github.com/bazelbuild/bazel/releases
 right click on bazel.dist.zip 
 select copy link address
@@ -172,6 +174,14 @@ sess = tf.Session()
 print(sess.run(hello))
 If the system outputs the following, then you are ready to begin writing TensorFlow programs:
 Hello, TensorFlow!
+exit python
+
+check to make sure tensorflow is using the gpu
+------------------------
+run python
+run:
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+if you see "gpu" and "gpu_device" in there, you are good to go
 
 Congrats, you have successfully installed tensorflow!!!!
 That was fun right?! Dr. Seng and I had a blast!
