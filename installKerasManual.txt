@@ -99,6 +99,7 @@ download the file
 run:
 wget <link address>
 where <link address> is the link address you copied in the step before
+unzip
 run:
 ./compile.sh
 to compile bazel
