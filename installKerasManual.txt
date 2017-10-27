@@ -87,7 +87,7 @@ run python
 run:
 python
 it should show version 2.7.14
-if it shows 2.7.5, then you did not update the path correctly
+if it shows 2.7.5, then log out and log back into the server and retry
 exit python using ctrl + d
 
 install bazel
