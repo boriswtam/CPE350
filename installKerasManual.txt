@@ -183,6 +183,11 @@ run:
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 if you see "gpu" and "gpu_device" in there, you are good to go
 
+install keras
+--------------
+run:
+pip install keras
+
 Congrats, you have successfully installed tensorflow!!!!
 That was fun right?! Dr. Seng and I had a blast!
 Now get coding!!
