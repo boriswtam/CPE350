@@ -34,7 +34,7 @@ run:
 tar -xvzf Python-2.7.14.tgz
 sftp into room 127
 run:
-sftp mmyjak@127x02.csc.calpoly.edu
+sftp -f mmyjak@127x02.csc.calpoly.edu
 where mmyjak is replaced with your username and x02 can be any value 01 to 20
 put the Python directory and its contents from your local machine to server
 run:
