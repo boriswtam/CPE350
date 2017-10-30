@@ -93,25 +93,8 @@ exit python using ctrl + d
 install bazel
 -----------------
 mkdir bazel-0.7
-  564  mv bazel-0.7.0-dist.zip bazel-0.7
-  565  ls
-  566  cd bazel-0.7/
-  567  ls
-  568  unzip bazel-0.7.0-dist.zip 
-  569  ls
-  570  ./compile.sh 
-  571  cd output/
-  572  ls
-  573  ls -al
-  574  cp bazel ~/my_python/bin/
-  575  cd
-  576  bazel
-
-
-
-
-make a directory called 'bazel-0.7'
-go to that directory
+mv bazel-0.7.0-dist.zip bazel-0.7
+cd bazel-0.7/
 go to https://github.com/bazelbuild/bazel/releases
 right click on bazel.dist.zip 
 select copy link address
@@ -120,10 +103,12 @@ download the file
 run:
 wget <link address>
 where <link address> is the link address you copied in the step before
-unzip
-run:
-./compile.sh
-to compile bazel
+unzip bazel-0.7.0-dist.zip 
+./compile.sh 
+cd output/
+cp bazel ~/my_python/bin/
+cd
+bazel
 
 install cuDNN
 --------------
