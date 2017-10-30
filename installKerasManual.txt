@@ -92,7 +92,7 @@ exit python using ctrl + d
 
 install bazel
 -----------------
-make a directory called 'bazel'
+make a directory called 'bazel-0.7'
 go to that directory
 go to https://github.com/bazelbuild/bazel/releases
 right click on bazel.dist.zip 
