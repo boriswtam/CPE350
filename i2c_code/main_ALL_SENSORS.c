@@ -15,9 +15,9 @@
 * D_TMP007          = 7
 ****************************************************************************/
 //#include <rc_usefulincludes.h> 
-//#include <roboticscape.h>
-//#include <inttypes.h>
-//#include "DEBUG.h"           
+#include <roboticscape.h>
+#include <inttypes.h>
+#include "DEBUG.h"           
 #include "ADXL345.h"
 #include "TMP36.h"
 #include "LTSR.h"

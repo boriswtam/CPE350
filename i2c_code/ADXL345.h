@@ -44,11 +44,9 @@ void get_ADXL345(ADXL345_sensor * sensor);
 * Most options are left in their default state
 * +/- 2G mode - 10 bit resolution
 ****************************************************************************/
-//#include <rc_usefulincludes.h> 
-//#include <roboticscape.h>
-//#include "ADXL345.h"
-#include "stdint.h"
-#include "stdio.h"
+#include <rc_usefulincludes.h> 
+#include <roboticscape.h>
+#include "ADXL345.h"
  
 // Static function declarations
 static void read_raw_accel_values(uint8_t * x0, uint8_t * x1, uint8_t * y0, uint8_t * y1, uint8_t * z0, uint8_t * z1);
