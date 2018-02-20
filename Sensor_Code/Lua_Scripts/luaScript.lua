@@ -1,18 +1,3 @@
---This is an example that uses the Adafruit 10-DOF IMU BREAKOUT, which contains the BMP180 Pressure sensor, L3GD20H Gyro, and the LSM303DLHC Accelerometer & Magnetometer
---BMP180 was not implemented into this script
---This example is a combination of the L3GD20H Gyro, LSM303 Accelerometer, and LSM303 Magnetometer Lua scripts
---This is configured for the I2C Bus on EIO4(SCL) and EIO5(SDA)
---Outputs data to Registers:
---X mag = 46000
---Y mag = 46002
---Z mag = 46004
---X accel = 46006
---Y accel = 46008
---Z accel = 46010
---X gyro = 46012
---Y gyro = 46014
---Z gyro = 46016
-
 fwver = MB.R(60004, 3)
 devType = MB.R(60000, 3)
 if (fwver < 1.0224 and devType == 7) or (fwver < 0.2037 and devType == 4) then
@@ -47,12 +32,6 @@ for i=1, addrsLen do--verify that the target device was found
     found = found+1
   end
 end
-'''
-if found ~= 3 then
-  print(string.format("%d", found).." slave devices found (looking for 4 devices), program stopping")
-  MB.W(6000, 1, 0)
-end
-'''
 
 --init ADXL345 slave
 MB.W(5104, 0, ADXL345_ADDR)--change target to acceleromter
@@ -60,8 +39,8 @@ I2C.write({0x31, 0x09})--set for +-4G
 I2C.write({0x2D, 0x08})--Disable power saving
 --init TMP007 slave
 MB.W(5104, 0, TMP007_ADDR)--change target to temperature sensor
-I2C.write({0x02, 0x1000 | 0x0100 | 0x0040 | (int) 9600})
-I2C.write({0x05, 0x8000 | 0x4000})
+I2C.write({0x02, 0x1000 or 0x0100 or 0x0040 or (int) 9600})
+I2C.write({0x05, 0x8000 or 0x4000})
 
 --Begin loop
 LJ.IntervalConfig(0, 500)
@@ -79,12 +58,12 @@ while true do
      	 	table.insert(data_ADXL345, convert_16_bit(ADXL_raw_data[(2*i) + 2], ADXL345_raw_data[(2 * i) + 1], 233))
 		end
     --end
-	'''
+	--[[
     dataMag = {}
     table.insert(dataMag, convert_16_bit(dataMagRaw[1], dataMagRaw[2], 1100))--convert the data into useful gauss values
     table.insert(dataMag, convert_16_bit(dataMagRaw[3], dataMagRaw[4], 11000))
     table.insert(dataMag, convert_16_bit(dataMagRaw[5], dataMagRaw[6], 980))
-    '''
+    ]]--
 
     --begin TMP007 data read--
     MB.W(5104, 0, TMP007_ADDR)--change target to accelerometer	
