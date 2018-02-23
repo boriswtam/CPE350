@@ -3,8 +3,8 @@
 *
 * Reading the voltage output from the Sparkfun Sound_Detector. 
 ****************************************************************************/
-#include <rc_usefulincludes.h> 
-#include <roboticscape.h>
+//#include <rc_usefulincludes.h> 
+//#include <roboticscape.h>
 #include "Sound_Detector.h"
  
 /****************************************************************************
