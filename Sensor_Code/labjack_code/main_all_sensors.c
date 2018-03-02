@@ -13,6 +13,7 @@
 #include "tmp007_i2c.h"
 #include "sound_detector.h"
 #include "current_sensor.h"
+#include "rpm_sensor.h"
 #include "LJM_Utilities.h"
 #include "LabJackMModbusMap.h"
 
@@ -42,6 +43,7 @@ int main(int argc, char * argv[]) {
 	struct tmp007_sensor_struct tmp007_sensor;
 	struct sound_detector_struct sound_detector;
 	struct current_sensor_struct current_sensor;
+	struct rpm_sensor_struct rpm_sensor;
 
 	// Open first found LabJack
 	handle = OpenOrDie(LJM_dtANY, LJM_ctANY, "LJM_idANY");
@@ -55,8 +57,9 @@ int main(int argc, char * argv[]) {
 		tmp007_i2c(handle, &tmp007_sensor);
 		sound_detector_init(handle, &sound_detector);
 		current_sensor_init(handle, &current_sensor);
-		fprintf(file, "%.2f%c%.2f%c%.2lf%c%.2lf\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
-			 sound_detector.voltage, ',', current_sensor.current);
+		rpm_sensor_init(handle, &rpm_sensor);
+		fprintf(file, "%.2f%c%.2f%c%.2lf%c%.2lf%c%d\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
+			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm);
 	}
 
 	fclose(file);
