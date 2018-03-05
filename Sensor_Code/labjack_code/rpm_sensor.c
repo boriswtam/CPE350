@@ -27,7 +27,8 @@ void rpm_sensor_init(int handle, struct rpm_sensor_struct * rpm_sensor) {
 		else {
 			end_t = clock();
 		}
+		total_t = end_t - start_t;
 	}
 
-	total_t = end_t - start_t;
+	rpm_sensor->rpm = (total_t / CLOCKS_PER_SEC) * 60;
 }
