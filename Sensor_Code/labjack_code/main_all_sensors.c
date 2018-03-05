@@ -14,7 +14,9 @@
 #include "sound_detector.h"
 #include "current_sensor.h"
 #include "rpm_sensor.h"
+#include "run_motor.h"
 #include "LJM_Utilities.h"
+//#include "LJM_StreamUtilities.h"
 #include "LabJackMModbusMap.h"
 
 char * input_handle(int argc, char * fp) {
@@ -52,6 +54,8 @@ int main(int argc, char * argv[]) {
 
 	FILE *file = fopen(file_name, "a+");
 	fprintf(file, "%s\n", "tmp local (C), tmp object (C), sound voltage (V), current (A),");
+
+	run_motor();
 
 	while(1) {
 		tmp007_i2c(handle, &tmp007_sensor);
