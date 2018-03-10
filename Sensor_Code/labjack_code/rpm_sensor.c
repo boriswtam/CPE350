@@ -7,28 +7,29 @@
 #define HIGH 2.5 // switching voltage
 
 void rpm_sensor_init(int handle, struct rpm_sensor_struct * rpm_sensor) {
-	clock_t start_t, end_t, total_t = 0;
+	clock_t start_t, total_t = 0;
 	int rotations = 0;
 
-	int err;
+	int err = 0;
 	double value = 0;
 	const char * NAME = "AIN2";
+        int last_value = 0;
 
 	// Read AIN from the LabJack
-	err = LJM_eReadName(handle, NAME, &value);
 
 	ErrorCheck(err, "LJM_eReadName");
 
-	while ((total_t/CLOCKS_PER_SEC) < 1) {
-		if (value > HIGH) {
-			start_t = clock();
+        start_t = clock();
+	while ((total_t/(CLOCKS_PER_SEC / 6)) < 1) {
+                err = LJM_eReadName(handle, NAME, &value);
+		if (value < HIGH && last_value != 1) {
 			rotations++;
+                        last_value = 1;
 		}
-		else {
-			end_t = clock();
+                else {
+			last_value = 0;
 		}
-		total_t = end_t - start_t;
+		total_t = clock() - start_t;
 	}
-
-	rpm_sensor->rpm = (total_t / CLOCKS_PER_SEC) * 60;
+	rpm_sensor->rpm = rotations * 180;
 }

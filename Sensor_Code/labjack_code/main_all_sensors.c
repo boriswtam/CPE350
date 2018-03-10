@@ -16,24 +16,23 @@
 #include "rpm_sensor.h"
 #include "run_motor.h"
 #include "LJM_Utilities.h"
-//#include "LJM_StreamUtilities.h"
 #include "LabJackMModbusMap.h"
 
 char * input_handle(int argc, char * fp) {
-	char * file_name = malloc(sizeof(fp));	
+	char * file_name;
+        file_name = malloc(strlen(fp) + 5);
 	if (argc < 2) {
 		printf("Please specify an output file\n");
 		exit(1);
 	}
-	
 	else {
 		if (strstr(fp, ".csv") == NULL) {
 			strcpy(file_name, fp);				
-			fp = realloc(file_name, sizeof(file_name) + 5);
 			strcat(file_name, ".csv");				
+                        return file_name;
 		}	
+		return fp;
 	}
-	return file_name;
 }
 
 int main(int argc, char * argv[]) {
@@ -54,8 +53,8 @@ int main(int argc, char * argv[]) {
 
 	FILE *file = fopen(file_name, "a+");
 	fprintf(file, "%s\n", "tmp local (C), tmp object (C), sound voltage (V), current (A),");
-
-	run_motor();
+        fflush(file);
+	run_motor(handle);
 
 	while(1) {
 		tmp007_i2c(handle, &tmp007_sensor);
@@ -64,6 +63,7 @@ int main(int argc, char * argv[]) {
 		rpm_sensor_init(handle, &rpm_sensor);
 		fprintf(file, "%.2f%c%.2f%c%.2lf%c%.2lf%c%d\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
 			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm);
+		fflush(file);
 	}
 
 	fclose(file);
