@@ -23,7 +23,7 @@ void current_sensor_init(int handle, struct current_sensor_struct * current_sens
 
 	// Read AIN from the LabJack
         start_t = clock();
-        while ((total_t/(CLOCKS_PER_SEC / 1)) < 1) {
+        while ((total_t/(CLOCKS_PER_SEC / 10)) < 1) {
                 LJM_eReadName(handle, NAME, &value);
                 if (value > max_value) {
 			max_value = value;
@@ -34,5 +34,5 @@ void current_sensor_init(int handle, struct current_sensor_struct * current_sens
                 total_t = clock() - start_t;
         }
 
-	current_sensor->current = max_value - min_value;
+	current_sensor->current = (max_value - min_value) / .028;
 }
