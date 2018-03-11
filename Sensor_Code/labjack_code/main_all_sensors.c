@@ -62,7 +62,7 @@ int main(int argc, char * argv[]) {
 	printf("\n");
 
 	FILE *file = fopen(file_name, "a+");
-	fprintf(file, "%s\n", "tmp local (C), tmp object (C), sound voltage (V), current (A),");
+//	fprintf(file, "%s\n", "tmp local (C), tmp object (C), sound voltage (V), current (A),");
         fflush(file);
         rms.supply_voltage = 12;
         rms.frequency = 50;

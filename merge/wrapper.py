@@ -49,7 +49,7 @@ if __name__ == '__main__':
       for line in dataChunk:
          floats.append(np.fromstring(line, sep=","))
       results = loadedPhm.runNet(floats, model)
-      os.system('clear')
+     #os.system('clear')
       for x in np.nditer(results):
          if x > 0.5:
             print("Error")
