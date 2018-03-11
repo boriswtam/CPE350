@@ -11,13 +11,6 @@ def runNet(X, model):
 
 def initNet():
    INPUT_SIZE = 16
-   '''
-   jsonPhmFile = open('phmModel.json','r')
-   loadedPhmJsonModel = jsonPhmFile.read()
-   jsonPhmFile.close()
-   model = model_from_json(loadedPhmJsonModel)
-   model.load_weights("phmModel.h5")
-   '''
    model = load_model('fullPhmModel.h5')
    model.compile(loss='binary_crossentropy', 
                  optimizer='adam',

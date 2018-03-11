@@ -1,8 +1,8 @@
 #!/bin/bash
 for i in {1..50}
 do
-   cat noErrTest >> $1
+   cat noErrTest.csv >> $1
    sleep 1
-   cat errTest >> $1
+   cat errTest.csv >> $1
    sleep 1
 done
