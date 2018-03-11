@@ -5,8 +5,9 @@
 
 struct current_sensor_struct {
 	double current;
+	int handle;
 }; 
 
-void current_sensor_init(int handle, struct current_sensor_struct * current_sensor);
+void current_sensor_init(struct current_sensor_struct * current_sensor);
 
 #endif

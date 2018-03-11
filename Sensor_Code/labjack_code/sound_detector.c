@@ -7,8 +7,9 @@
 #include "LJM_Utilities.h"
 #include "sound_detector.h"
 
-void sound_detector_init(int handle, struct sound_detector_struct * sound_detector)
+void sound_detector_init(struct sound_detector_struct * sound_detector)
 {
+	while (1) {
 	int err;
 
 	// Set up for reading AIN value
@@ -16,8 +17,10 @@ void sound_detector_init(int handle, struct sound_detector_struct * sound_detect
 	const char * NAME = "AIN1";
 
 	// Read AIN from the LabJack
-	err = LJM_eReadName(handle, NAME, &value);
+	err = LJM_eReadName(sound_detector->handle, NAME, &value);
 	sound_detector->voltage = value;
 
 	ErrorCheck(err, "LJM_eReadName");
+	sleep(1);
+	}
 }

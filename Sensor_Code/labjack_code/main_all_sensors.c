@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <LabJackM.h>
+#include <pthread.h>
 
 #include "tmp007_i2c.h"
 #include "sound_detector.h"
@@ -23,24 +24,22 @@
 
 char * input_handle(int argc, char * fp) {
 	char * file_name;
+        if (argc < 2) {
+                printf("Please specify an output file\n");
+                exit(1);
+        }
         file_name = malloc(strlen(fp) + 5);
-	if (argc < 2) {
-		printf("Please specify an output file\n");
-		exit(1);
-	}
-	else {
-		if (strstr(fp, ".csv") == NULL) {
-			strcpy(file_name, fp);				
-			strcat(file_name, ".csv");				
-                        return file_name;
-		}	
-		return fp;
-	}
+	if (strstr(fp, ".csv") == NULL) {
+		strcpy(file_name, fp);				
+		strcat(file_name, ".csv");				
+        	return file_name;
+	}	
+	return fp;
 }
 
 int main(int argc, char * argv[]) {
 	char * file_name = input_handle(argc, argv[1]);
-
+	int error = 0;
 	
 	int handle;
 
@@ -48,6 +47,7 @@ int main(int argc, char * argv[]) {
 	fd_set rfds;
 	struct timeval tv;
 	char user_input[3000];	
+	pthread_t my_thread;
 
 	// Sensor value declerations
 	struct tmp007_sensor_struct tmp007_sensor;
@@ -60,31 +60,40 @@ int main(int argc, char * argv[]) {
 	handle = OpenOrDie(LJM_dtANY, LJM_ctANY, "LJM_idANY");
 	PrintDeviceInfoFromHandle(handle);
 	printf("\n");
+	tmp007_sensor.handle = handle;
+	sound_detector.handle = handle;
+	current_sensor.handle = handle;
+	rpm_sensor.handle = handle;
 
 	FILE *file = fopen(file_name, "a+");
 //	fprintf(file, "%s\n", "tmp local (C), tmp object (C), sound voltage (V), current (A),");
         fflush(file);
+
+//Code to run the motor
         rms.supply_voltage = 12;
         rms.frequency = 50;
-        rms.duty_cycle = .1;
-		run_motor(handle, &rms);
+        rms.duty_cycle = .07;
+	run_motor(handle, &rms);
         sleep(1);
         rms.duty_cycle = .025;
         run_motor(handle, &rms);
         sleep(1);
-        rms.duty_cycle = .1;
+        rms.duty_cycle = .07;
         run_motor(handle, &rms);
+////////////////////////////////
+
 
  	tv.tv_sec = 0;
 	tv.tv_usec = 0;
 
+	pthread_create(&my_thread, NULL, (void *)&tmp007_i2c, (void *)(&tmp007_sensor));
+	pthread_create(&my_thread, NULL, (void *)&sound_detector_init, (void *)(&sound_detector));
+	pthread_create(&my_thread, NULL, (void *)&current_sensor_init, (void *)(&current_sensor));
+	pthread_create(&my_thread, NULL, (void *)&rpm_sensor_init, (void *)(&rpm_sensor));
+
 	while(1) {
-		tmp007_i2c(handle, &tmp007_sensor);
-		sound_detector_init(handle, &sound_detector);
-		current_sensor_init(handle, &current_sensor);
-		rpm_sensor_init(handle, &rpm_sensor);
-		fprintf(file, "%.2f%c%.2f%c%.2lf%c%.4lf%c%d%c%d%c%d%c%.4f\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
-			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm, ',', rms.supply_voltage, ',', rms.frequency, ',', rms.duty_cycle);
+		fprintf(file, "%.2f%c%.2f%c%.2lf%c%.4lf%c%d%c%d%c%d%c%.4f%c%d\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
+			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm, ',', rms.supply_voltage, ',', rms.frequency, ',', rms.duty_cycle, ',', error);
 		fflush(file);
 
 		
@@ -96,6 +105,7 @@ int main(int argc, char * argv[]) {
 			rms.duty_cycle = atof(user_input);
 			run_motor(handle, &rms);
 		}
+		usleep(10000);
 	}
 
 	fclose(file);

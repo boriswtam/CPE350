@@ -6,8 +6,9 @@
 
 struct sound_detector_struct {
 	double voltage;
+	int handle;
 }; 
 
-void sound_detector_init(int handle, struct sound_detector_struct *sound_detector);
+void sound_detector_init(struct sound_detector_struct *sound_detector);
 
 #endif

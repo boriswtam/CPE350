@@ -6,30 +6,38 @@
 
 #define HIGH 2.5 // switching voltage
 
-void rpm_sensor_init(int handle, struct rpm_sensor_struct * rpm_sensor) {
-	clock_t start_t, total_t = 0;
-	int rotations = 0;
+void rpm_sensor_init(struct rpm_sensor_struct * rpm_sensor) {
+	while (1) {
+		struct timespec start_t, current_t;
+		int rotations = 0;
 
-	int err = 0;
-	double value = 0;
-	const char * NAME = "AIN0";
-        int last_value = 0;
+		int err = 0;
+		double value = 0;
+		const char * NAME = "AIN0";
+        	int last_value = 0;
+		int number_checks = 0;
 
 	// Read AIN from the LabJack
 
-	ErrorCheck(err, "LJM_eReadName");
+		ErrorCheck(err, "LJM_eReadName");
 
-        start_t = clock();
-	while ((total_t/(CLOCKS_PER_SEC / 6)) < 1) {
-                err = LJM_eReadName(handle, NAME, &value);
-		if (value < HIGH && last_value != 1) {
-			rotations++;
-                        last_value = 1;
+        	clock_gettime(CLOCK_MONOTONIC, &start_t);
+		clock_gettime(CLOCK_MONOTONIC, &current_t);
+		int num = 0;
+		while (current_t.tv_sec - start_t.tv_sec < 1) {
+                	err = LJM_eReadName(rpm_sensor->handle, NAME, &value);
+			if (value < HIGH && last_value != 1) {
+				rotations++;
+                        	last_value = 1;
+			}
+                	else if (value > HIGH) {
+				last_value = 0;
+			}
+			number_checks++;
+			clock_gettime(CLOCK_MONOTONIC, &current_t);
+			num++;
 		}
-                else {
-			last_value = 0;
-		}
-		total_t = clock() - start_t;
+		rotations = rotations * 30;
+		rpm_sensor->rpm = rotations;
 	}
-	rpm_sensor->rpm = rotations * 180;
 }

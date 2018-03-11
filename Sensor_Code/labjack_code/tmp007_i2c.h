@@ -8,8 +8,9 @@ struct tmp007_sensor_struct {
 	float local_tmp;
 	float voltage;
 	float object_tmp;
+	int handle;
 }; 
 
-void tmp007_i2c(int handle, struct tmp007_sensor_struct * tmp007_sensor);
+void tmp007_i2c(struct tmp007_sensor_struct * tmp007_sensor);
 
 #endif
