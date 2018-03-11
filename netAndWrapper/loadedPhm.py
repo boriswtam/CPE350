@@ -16,3 +16,18 @@ def initNet():
                  optimizer='adam',
                  metrics=['accuracy'])
    return model
+
+'''
+falsePositive = 0
+falseCount = 0
+for x in np.nditer(predict):
+   if x > 0.5:
+      falsePositive += 1
+   else:
+      falsePositive = 0
+
+   if falsePositive == 10:
+      falsePositive = 0
+      falseCount += 1
+print(falseCount)
+'''
