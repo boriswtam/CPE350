@@ -1,27 +1,29 @@
 import numpy as np
 import sys
 import os.path
+np.random.seed(7)
 from keras.models import Sequential #linear stack of layers
 from keras.layers import Dense, Dropout, Activation, Flatten #typical layers used
 from keras.layers import Convolution1D, MaxPooling1D #since our data is one dimensional
 from keras import backend as K #using tensorflow backend
-np.random.seed(7)
 
-def handleFile():
+def handleFile(inpSize):
    if(len(sys.argv) < 3):
       sys.exit("Format: python phm.py [filename] [input size]")
    fname = sys.argv[1]
-   inpSize = int(sys.argv[2])
+   inpSize = sys.argv[2]
    if ".csv" not in fname: 
       sys.exit("Specify a filename with .csv at the end")
    if(os.path.isfile(fname) != True):
       sys.exit("Cannot find file")
-   return fname, inpSize
+   return fname
 
 #main
-fname, inpSize = handleFile()
+inpSize = 0
+fname = handleFile(inpSize)
 K.set_image_dim_ordering('tf')
 
+#change to accept command line argument as file name
 dataset = np.loadtxt(fname, delimiter=",")  #might need to change to genfromtxt
 
 X = dataset[:,0:inpSize]
@@ -59,6 +61,13 @@ model.fit(X, Y, epochs=10, batch_size=10)
 scores = model.evaluate(X, Y)
 print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 
-#save model and weights
+#serialize model to json to save the weights
+'''
+jsonModel = model.to_json()
+with open('phmModel.json', 'w') as jsonPhmFile:
+   jsonPhmFile.write(jsonModel)
+#serialize weights to HDF5
+model.save_weights("phmModel.h5")
+'''
 model.save("fullPhmModel.h5")
 
