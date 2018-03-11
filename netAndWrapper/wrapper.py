@@ -45,11 +45,11 @@ if __name__ == '__main__':
    loglines = follow(logfile)
 
    for dataChunk in loglines:
-      floats = []
+      dataset = []
       for line in dataChunk:
-         floats.append(np.fromstring(line, sep=","))
-      results = loadedPhm.runNet(floats, model)
-      os.system('clear')
+         dataset.append(np.fromstring(line, sep=","))
+      results = loadedPhm.runNet(dataset, model)
+     #os.system('clear')
       for x in np.nditer(results):
          if x > 0.5:
             print("Error")
