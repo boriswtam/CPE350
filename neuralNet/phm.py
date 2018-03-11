@@ -9,7 +9,7 @@ from keras import backend as K #using tensorflow backend
 
 def handleFile(inpSize):
    if(len(sys.argv) < 3):
-      sys.exit("Format: python [filename] [input size]")
+      sys.exit("Format: python phm.py [filename] [input size]")
    fname = sys.argv[1]
    inpSize = sys.argv[2]
    if ".csv" not in fname: 
