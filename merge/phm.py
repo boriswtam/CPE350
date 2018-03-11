@@ -7,20 +7,20 @@ from keras.layers import Dense, Dropout, Activation, Flatten #typical layers use
 from keras.layers import Convolution1D, MaxPooling1D #since our data is one dimensional
 from keras import backend as K #using tensorflow backend
 
-def handleFile(inpSize):
+def handleFile():
    if(len(sys.argv) < 3):
       sys.exit("Format: python phm.py [filename] [input size]")
    fname = sys.argv[1]
-   inpSize = sys.argv[2]
+   inpSize = int(sys.argv[2])
    if ".csv" not in fname: 
       sys.exit("Specify a filename with .csv at the end")
    if(os.path.isfile(fname) != True):
       sys.exit("Cannot find file")
-   return fname
+   return fname, inpSize
 
 #main
 inpSize = 0
-fname = handleFile(inpSize)
+fname, inpSize = handleFile()
 K.set_image_dim_ordering('tf')
 
 #change to accept command line argument as file name
