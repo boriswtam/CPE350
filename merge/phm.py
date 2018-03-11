@@ -1,11 +1,11 @@
 import numpy as np
 import sys
 import os.path
-np.random.seed(7)
 from keras.models import Sequential #linear stack of layers
 from keras.layers import Dense, Dropout, Activation, Flatten #typical layers used
 from keras.layers import Convolution1D, MaxPooling1D #since our data is one dimensional
 from keras import backend as K #using tensorflow backend
+np.random.seed(7)
 
 def handleFile():
    if(len(sys.argv) < 3):
@@ -19,7 +19,6 @@ def handleFile():
    return fname, inpSize
 
 #main
-inpSize = 0
 fname, inpSize = handleFile()
 K.set_image_dim_ordering('tf')
 
@@ -61,13 +60,6 @@ model.fit(X, Y, epochs=10, batch_size=10)
 scores = model.evaluate(X, Y)
 print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 
-#serialize model to json to save the weights
-'''
-jsonModel = model.to_json()
-with open('phmModel.json', 'w') as jsonPhmFile:
-   jsonPhmFile.write(jsonModel)
-#serialize weights to HDF5
-model.save_weights("phmModel.h5")
-'''
+#save model and weights
 model.save("fullPhmModel.h5")
 
