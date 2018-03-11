@@ -12,7 +12,7 @@ void rpm_sensor_init(int handle, struct rpm_sensor_struct * rpm_sensor) {
 
 	int err = 0;
 	double value = 0;
-	const char * NAME = "AIN2";
+	const char * NAME = "AIN0";
         int last_value = 0;
 
 	// Read AIN from the LabJack

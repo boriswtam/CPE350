@@ -67,7 +67,7 @@ int main(int argc, char * argv[]) {
         rms.supply_voltage = 12;
         rms.frequency = 50;
         rms.duty_cycle = .1;
-	run_motor(handle, &rms);
+		run_motor(handle, &rms);
         sleep(1);
         rms.duty_cycle = .025;
         run_motor(handle, &rms);
