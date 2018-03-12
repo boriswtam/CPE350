@@ -54,7 +54,7 @@ model.compile(loss='binary_crossentropy',
 # Fit the model
 #10k training samples, batch_size=10 (number of samples to go thru net)`
 #will take 1000 iterations/steps per epoch
-model.fit(X, Y, epochs=10, batch_size=10)
+model.fit(X, Y, epochs=1, batch_size=32)
 # evaluate the model
 scores = model.evaluate(X, Y)
 print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
