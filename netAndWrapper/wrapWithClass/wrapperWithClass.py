@@ -44,18 +44,14 @@ if __name__ == '__main__':
    logfile = open(fname,"r")
    loglines = follow(logfile)
 
-   i = 1
+   i = 0
    for dataChunk in loglines:
       dataset = []
       for line in dataChunk:
          dataset.append(np.fromstring(line, sep=","))
       results = loadedPhmWithClass.runNet(dataset, model)
-      print results
-      os.system('clear')
-      '''
-      for x in np.nditer(results):
-         print x
-         if i%6 == 0:
-            print "------"
-         i+=1
-      '''
+      print (results)
+      if i == 10:
+         os.system('clear')
+         i = 0
+      i+=1
