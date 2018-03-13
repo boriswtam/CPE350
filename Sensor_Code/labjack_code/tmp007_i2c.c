@@ -39,8 +39,8 @@ void tmp007_i2c(struct tmp007_sensor_struct * tmp007_sensor)
 	else {
 		// For the T7 and other devices, using FIO0 and FIO1 for the SCL and SDA
 		// pins.
-		WriteNameOrDie(tmp007_sensor->handle, "I2C_SDA_DIONUM", 13);  // SDA pin number = 1 (FIO1)
-		WriteNameOrDie(tmp007_sensor->handle, "I2C_SCL_DIONUM", 12);  // SCL pin number = 0 (FIO0)
+		WriteNameOrDie(tmp007_sensor->handle, "I2C_SDA_DIONUM", 12);  // SDA pin number = 1 (FIO1)
+		WriteNameOrDie(tmp007_sensor->handle, "I2C_SCL_DIONUM", 13);  // SCL pin number = 0 (FIO0)
 	}
 
 	// Speed throttle is inversely proportional to clock frequency. 0 = max.

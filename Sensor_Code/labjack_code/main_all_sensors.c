@@ -67,13 +67,13 @@ int main(int argc, char * argv[]) {
 
         rms.supply_voltage = 12;
         rms.frequency = 50;
-        rms.duty_cycle = .07;
+        rms.duty_cycle = .070;
         run_motor(handle, &rms);
         sleep(1);
         rms.duty_cycle = .025;
         run_motor(handle, &rms);
         sleep(1);
-        rms.duty_cycle = .07;
+        rms.duty_cycle = .070;
         run_motor(handle, &rms);
       //  init_motor(handle, rms);
 
@@ -89,13 +89,23 @@ int main(int argc, char * argv[]) {
 	pthread_create(&my_thread, NULL, (void *)&current_sensor_init, (void *)(&current_sensor));
 	pthread_create(&my_thread, NULL, (void *)&rpm_sensor_init, (void *)(&rpm_sensor));
 
+	char buffer[10][10000];
+	int i = 0;
+
 	while(1) {
 		//tmp local (C), tmp object (C), sound voltage (V), current (A), rpm, supply voltage (V), frequency (Hz), Duty Cycle, Error
-		fprintf(file, "%.2f%c%.2f%c%.2lf%c%.4lf%c%d%c%d%c%d%c%.4f%c%d\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
+		sprintf(buffer[i], "%.2f%c%.2f%c%.2lf%c%.4lf%c%d%c%d%c%d%c%.4f%c%d\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
 			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm, ',', rms.supply_voltage, ',', rms.frequency, ',', rms.duty_cycle, ',', error);
 		fflush(file);
-
-		
+		i++;
+		if (i == 10) {
+			for (i = 0; i < 10; i++) {
+				printf("Printing Line: %d\n", i);
+				fprintf(file, "%s", buffer[i]);
+			}
+			i = 0;
+		}
+		printf("DONE PRINTING\n");
 		FD_ZERO(&rfds);
 		FD_SET(0, &rfds);
 		retval = select(1, &rfds, NULL, NULL, &tv);
@@ -104,7 +114,7 @@ int main(int argc, char * argv[]) {
 			rms.duty_cycle = atof(user_input);
 			run_motor(handle, &rms);
 		}
-		usleep(10000);
+		usleep(100000);
 	}
 
 	fclose(file);
