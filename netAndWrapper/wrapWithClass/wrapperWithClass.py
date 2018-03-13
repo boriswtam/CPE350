@@ -49,8 +49,21 @@ if __name__ == '__main__':
       dataset = []
       for line in dataChunk:
          dataset.append(np.fromstring(line, sep=","))
-      results = loadedPhmWithClass.runNet(dataset, model)
-      print (results)
+      lenDataChunk = len(dataChunk)
+      results = loadedPhmWithClass.runNet(dataset, model, lenDataChunk)
+      if results == 0:
+         print ("No Error")
+      elif results == 1:
+         print ("Possible Error: Current Issue Detected")
+      elif results == 2:
+         print ("Possible Error: High Temperature Detected")
+      elif results == 3:
+         print ("Possible Error: Off Balance Detected")
+      elif results == 4:
+         print ("Possibe Error: Friction Detected")
+      elif results == 5:
+         print ("Possibe Error: Loud Sound Detected")
+
       if i == 10:
          os.system('clear')
          i = 0

@@ -3,7 +3,7 @@ import time
 import numpy as np
 from keras.models import load_model
 
-def runNet(X, model):
+def runNet(X, model, lenDataChunk):
    X = np.expand_dims(X, axis=2) 
    k = np.array(X)
    predicts = model.predict(k)
@@ -12,7 +12,7 @@ def runNet(X, model):
    for singlePredict in np.nditer(predicts):
       y_proba[i % 6] += singlePredict
       i += 1
-   y_proba = y_proba / 10
+   y_proba = y_proba / lenDataChunk
    y_class = y_proba.argmax(axis=-1) 
    return y_class 
 
