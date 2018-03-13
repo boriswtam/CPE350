@@ -34,15 +34,15 @@ model = Sequential()
 #Must provide an input shape if first layer in the model
 #batch size only needs to be specified in "fit" as the net
 #should be able to handle any batch size
-model.add(Dense(16, activation='relu', input_shape=(inpSize,1)))
+model.add(Dense(8, activation='relu', input_shape=(inpSize,1)))
 
-model.add(Convolution1D(32, 2, padding="same", activation='relu'))
+model.add(Convolution1D(16, 2, padding="same", activation='relu'))
 #output of conv1D is 3 dimensional: batch_size, timesteps, features
 
 model.add(MaxPooling1D())
-model.add(Convolution1D(32, 2, padding="valid", activation='relu'))
+model.add(Convolution1D(16, 2, padding="valid", activation='relu'))
 model.add(MaxPooling1D())
-model.add(Dropout(0.25))
+#model.add(Dropout(0.25))
 model.add(Flatten())
 
 #must be the last layer
@@ -54,7 +54,7 @@ model.compile(loss='binary_crossentropy',
 # Fit the model
 #10k training samples, batch_size=10 (number of samples to go thru net)`
 #will take 1000 iterations/steps per epoch
-model.fit(X, Y, epochs=10, batch_size=10)
+model.fit(X, Y, epochs=5, batch_size=10)
 # evaluate the model
 scores = model.evaluate(X, Y)
 print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))

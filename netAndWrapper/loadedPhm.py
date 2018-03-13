@@ -10,8 +10,7 @@ def runNet(X, model):
    return predict
 
 def initNet():
-   INPUT_SIZE = 8
-   model = load_model('fullPhmModel.h5')
+   model = load_model('esAeroDataNet.h5')
    model.compile(loss='binary_crossentropy', 
                  optimizer='adam',
                  metrics=['accuracy'])
