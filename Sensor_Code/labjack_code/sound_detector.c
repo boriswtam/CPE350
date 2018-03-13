@@ -14,7 +14,7 @@ void sound_detector_init(struct sound_detector_struct * sound_detector)
 
 	// Set up for reading AIN value
 	double value = 0;
-	const char * NAME = "AIN1";
+	const char * NAME = "AIN2";
 
 	// Read AIN from the LabJack
 	err = LJM_eReadName(sound_detector->handle, NAME, &value);

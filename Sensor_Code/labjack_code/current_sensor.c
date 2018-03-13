@@ -17,7 +17,7 @@ void current_sensor_init(struct current_sensor_struct * current_sensor)
 
 	// Set up for reading AIN value
 	double value = 0;
-	const char * NAME = "AIN2";
+	const char * NAME = "AIN1";
 
 	double max_value = -100;
 	double min_value = 100;
