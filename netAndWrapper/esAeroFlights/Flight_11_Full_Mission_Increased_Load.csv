@@ -1,4 +1,3 @@
-Accel_X,Accel_Y,Accel_Z,Cont_TempV,Cont_TempDegC,Cont_TempDegF,IF_Temp_ObjDegC,IF_Temp_ObjDegF,IF_Temp_LocDegC,IF_Temp_LocDegF,SoundV,SoundRaw,SoundScl,RPM_Hz,RPM,Current,Error
 0,0,0,0,0,0,0,0,0,0,0,0,0,1,4,0,1
 0.062,-0.14,0.963,0.669,16.901,62.501,13.594,56.469,22.375,72.275,0.081,245.7,8.308,1,4,0.527,1
 0.062,-0.14,0.967,0.673,17.341,63.134,13.594,56.469,22.375,72.275,0.086,253.5,8.659,1,4,0.545,1
