@@ -39,7 +39,7 @@ char * input_handle(int argc, char * fp) {
 
 int main(int argc, char * argv[]) {
 	char * file_name = input_handle(argc, argv[1]);
-	int error = 0;
+	int error = 1;
 	
 	int handle;
 
@@ -94,8 +94,8 @@ int main(int argc, char * argv[]) {
 
 	while(1) {
 		//tmp local (C), tmp object (C), sound voltage (V), current (A), rpm, supply voltage (V), frequency (Hz), Duty Cycle, Error
-		sprintf(buffer[i], "%.2f%c%.2f%c%.2lf%c%.4lf%c%d%c%d%c%d%c%.4f%c%d\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
-			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm, ',', rms.supply_voltage, ',', rms.frequency, ',', rms.duty_cycle, ',', error);
+		sprintf(buffer[i], "%.2f%c%.2f%c%.2lf%c%.4lf%c%d%c%d%c%d%c%.4f\n", tmp007_sensor.local_tmp, ',', tmp007_sensor.object_tmp, ',',
+			 sound_detector.voltage, ',', current_sensor.current, ',', rpm_sensor.rpm, ',', rms.supply_voltage, ',', rms.frequency, ',', rms.duty_cycle); //, ',', error);
 		fflush(file);
 		i++;
 		if (i == 10) {
@@ -114,7 +114,7 @@ int main(int argc, char * argv[]) {
 			rms.duty_cycle = atof(user_input);
 			run_motor(handle, &rms);
 		}
-		usleep(100000);
+		usleep(50000); //100000
 	}
 
 	fclose(file);
