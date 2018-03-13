@@ -44,18 +44,18 @@ if __name__ == '__main__':
    logfile = open(fname,"r")
    loglines = follow(logfile)
 
+   i = 0
    for dataChunk in loglines:
       dataset = []
       for line in dataChunk:
          dataset.append(np.fromstring(line, sep=","))
-      results = loadedPhm.runNet(dataset, model)
-      for x in np.nditer(results):
-         print x
-      '''
-      os.system('clear')
-      print(np.average(results))
-         if x > 0.5:
-            print("Error")
-         else:
-            print("No Error")
-      '''
+      lenDataChunk = len(dataChunk)
+      results = loadedPhm.runNet(dataset, model, lenDataChunk)
+      if results > 0.5:
+         print("Error")
+      else:
+         print("No Error")
+      if i == 10:
+         os.system('clear')
+         i = 0
+      i+=1
